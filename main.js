@@ -10,9 +10,10 @@ const createWindow = () => {
     height: 600
   })
 
-
-  const child = exec('/Users/ralf/Documents/work/go/src/github.com/rwirdemann/marketsync/ms', (error) => {
-    console.log(error); 
+  const msPath = path.join(__dirname, './ms')
+  console.log("PATH: " + msPath)
+  const child = exec(msPath, { signal }, (error) => {
+    console.log("Error: " + error); 
   });
   
   win.loadURL("http://localhost:4000")
@@ -20,4 +21,9 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
   createWindow()
+})
+
+app.on('before-quit', () => {
+  controller.abort();
+  console.log("window-all-closed")
 })
